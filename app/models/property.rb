@@ -3,7 +3,7 @@ class Property < ApplicationRecord
 
   def self.filters
     {
-      property_type: :list,
+      property_type: :enum_list,
       price: :range
     }
   end

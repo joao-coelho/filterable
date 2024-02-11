@@ -16,7 +16,7 @@ module Filterable
 
       base.filters.each do |field, type|
         define_method FilterableHelper.find_filter_name(type, field) do
-          @builder = @builder.where(FilterableHelper.find_filter_query(type, field, @params[field]))
+          @builder = @builder.where(FilterableHelper.find_filter_query(type, field, @params[field], base))
 
           self
         end
