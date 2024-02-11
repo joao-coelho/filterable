@@ -16,7 +16,16 @@ module Filterable
 
       base.filters.each do |field, type|
         define_method FilterableHelper.find_filter_name(type, field) do
-          @builder = @builder.where(FilterableHelper.find_filter_query(type, field, @params[field], base))
+          value =
+            if type == :enum_list
+              enum = base.send(field.to_s.pluralize)
+
+              @params[field].map { |val| enum[val] }
+            else
+              @params[field]
+            end
+
+          @builder = @builder.where(FilterableHelper.find_filter_query(type, field, value))
 
           self
         end
