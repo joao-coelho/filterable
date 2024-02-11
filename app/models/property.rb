@@ -1,7 +1,9 @@
 class Property < ApplicationRecord
+  enum :property_type, [ :apartment, :detached_house ]
+
   def self.filters
     {
-      type: :list,
+      property_type: :list,
       price: :range
     }
   end
