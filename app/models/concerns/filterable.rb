@@ -10,7 +10,17 @@ module Filterable
         @params  = params
       end
 
-      def results
+      def results(all_filters: true)
+        if all_filters
+          @params.each_with_index do |(attr, value), index|
+            method_name = FilterableHelper.find_filter_name(self.class.module_parent.filters[attr], attr)
+            log_str = '-' * (index + 1)
+
+            puts "#{log_str}> Executing filter '#{method_name}(#{value})'"
+            send(method_name)
+          end
+        end
+
         @builder
       end
 

@@ -4,7 +4,12 @@ class Property < ApplicationRecord
   def self.filters
     {
       property_type: :enum_list,
-      price: :range
+      price: :range,
+      size: :excl_range,
+      bedrooms: :gt_or_eq,
+      published_at: :lt_or_eq,
+      bathrooms: :match,
+      sold: :not
     }
   end
 

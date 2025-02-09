@@ -14,6 +14,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_221456) do
   create_table "properties", force: :cascade do |t|
     t.float "price", null: false
     t.integer "property_type", null: false
+    t.integer "size", null: false
+    t.integer "bedrooms", null: false
+    t.integer "bathrooms", null: false
+    t.boolean "sold", default: false, null: false
+    t.datetime "published_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
