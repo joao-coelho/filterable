@@ -20,23 +20,23 @@ module FilterableHelper
     def find_filter_query(type, field, value)
       case type
       when :range
-        "#{field} BETWEEN #{value.first} AND #{value.last}"
+        ["#{field} BETWEEN ? AND ?", value.first, value.last]
       when :excl_range
-        "#{field} > #{value.first} AND #{field} < #{value.last}"
+        ["#{field} > ? AND #{field} < ?", value.first, value.last]
       when :gt
-        "#{field} > #{value}"
+        ["#{field} > ?", value]
       when :gt_or_eq
-        "#{field} >= #{value}"
+        ["#{field} >= ?", value]
       when :lt
-        "#{field} < #{value}"
+        ["#{field} < ?", value]
       when :lt_or_eq
-        "#{field} <= #{value}"
+        ["#{field} <= ?", value]
       when :list, :enum_list
-        value.one? ? "#{field} = #{value.first}" : "#{field} IN (#{value.join(',')})"
+        value.one? ? ["#{field} = ?", value.first] : ["#{field} IN (?)", value]
       when :match
-        "#{field} = #{value}"
+        ["#{field} = ?", value]
       when :not
-        "#{field} <> #{value}"
+        ["#{field} <> ?", value]
       end
     end
   end

@@ -6,12 +6,13 @@ module Filterable
   def self.included(base)
     querier = Class.new do
       def initialize(initial_scope, params)
-        @builder = initial_scope
-        @params  = params
+        @builder  = initial_scope
+        @params   = params
+        @building = false
       end
 
-      def results(all_filters: true)
-        if all_filters
+      def results
+        unless @building
           @params.each_with_index do |(attr, value), index|
             method_name = FilterableHelper.find_filter_name(self.class.module_parent.filters[attr], attr)
             log_str = '-' * (index + 1)
@@ -20,6 +21,8 @@ module Filterable
             send(method_name)
           end
         end
+
+        @building = false
 
         @builder
       end
@@ -35,7 +38,8 @@ module Filterable
               @params[field]
             end
 
-          @builder = @builder.where(FilterableHelper.find_filter_query(type, field, value))
+          @builder  = @builder.where(FilterableHelper.find_filter_query(type, field, value))
+          @building = true
 
           self
         end
